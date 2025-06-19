@@ -18,8 +18,8 @@ while (true)
             Console.WriteLine("Введите автора книги:");
             string? author = Console.ReadLine();
             Console.WriteLine("Введите год издания книги:");
-            string? year = Console.ReadLine();
-            if (title != null && author != null && year != null)
+            int year = Console.ReadLine() is string yearInput && int.TryParse(yearInput, out int parsedYear) ? parsedYear : 0;
+            if (title != null && author != null)
             {
                 Book book = new Book(title, author, year);
                 library.AddBook(book);
@@ -31,22 +31,16 @@ while (true)
             }
             break;
         case "2":
-            Console.WriteLine("Введите id книги (начинается с 0): ");
-            if (int.TryParse(Console.ReadLine(), out int id) && id >= 0)
+            Console.WriteLine("Введите название книги для удаления:");
+            string? bookTitle = Console.ReadLine();
+            if (bookTitle != null)
             {
-                try
-                {
-                    library.RemoveBook(id);
-                    Console.WriteLine($"Книга с id {id} удалена из библиотеки.");
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine("Книга с таким id не найдена.");
-                }
+                library.RemoveBookForTitle(bookTitle);
+                Console.WriteLine($"Книга '{bookTitle}' удалена из библиотеки.");
             }
             else
             {
-                Console.WriteLine("Некорректный ввод id.");
+                Console.WriteLine("Некорректный ввод названия книги.");
             }
             break;
         case "3":
@@ -54,14 +48,11 @@ while (true)
             string? authorName = Console.ReadLine();
             if (authorName != null)
             {
-                Book? foundBook = library.SearchOfAuthor(authorName);
-                if (foundBook != null)
+                List<Book> foundBooks = library.SearchOfAuthor(authorName);
+
+                foreach (var foundBook in foundBooks)
                 {
                     Console.WriteLine($"Книга найдена: {foundBook.Title} - {foundBook.Author} ({foundBook.Year})");
-                }
-                else
-                {
-                    Console.WriteLine("Книги с таким автором не найдены.");
                 }
             }
             else
@@ -74,9 +65,11 @@ while (true)
             if (allBooks.Count > 0)
             {
                 Console.WriteLine("Список всех книг в библиотеке:");
+                int index = 0;
                 foreach (var book in allBooks)
                 {
-                    Console.WriteLine($"{book.Title} - {book.Author} ({book.Year})");
+                    Console.WriteLine($"{index}. {book.Title} - {book.Author} ({book.Year})");
+                    index++;
                 }
             }
             break;
@@ -84,4 +77,7 @@ while (true)
             Console.WriteLine("Выход из программы.");
             return;
     }
+    Console.WriteLine("Нажмите любую клавишу для продолжения...");
+    Console.ReadKey(); 
+    Console.Clear();
 }

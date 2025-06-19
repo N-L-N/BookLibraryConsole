@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BookLibraryConsole.LibraryBook
 {
-    public class Book(string title, string author, string year)
+    public class Book(string title, string author, int year)
     {
         public string Title { get; } = title;
         public string Author { get; } = author;
-        public string Year { get; } = year;
+        public int Year { get; } = year;
     }
 }

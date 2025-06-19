@@ -22,20 +22,21 @@ namespace BookLibraryConsole.LibraryBook
             books.Add(book);
         }
 
-        public void RemoveBook(int id)
+        public void RemoveBookForTitle(string title)
         {
-            books.RemoveAt(id);
+            books.RemoveAll(b => b.Title == title.Trim());
         }
 
-        public Book? SearchOfAuthor(string author)
+        public List<Book> SearchOfAuthor(string author)
         { 
+            List<Book> foundBooks = [];
             for (int i = 0; i < books.Count; i++) {
                 if (books[i].Author == author.Trim())
                 {
-                    return books[i];
+                    foundBooks.Add(books[i]);
                 }
             }
-            return null;
+            return foundBooks;
         }
 
         public List<Book> GetAllBooks()
